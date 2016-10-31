@@ -1,0 +1,141 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-ajax/iron-ajax.html">
+<link rel="import" href="../paper-spinner/paper-spinner.html">
+
+<!--
+`polyfot-result`
+
+
+@demo demo/index.html 
+-->
+
+<dom-module id="polyfot-result">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      .summary {
+
+      }
+      .result {
+
+      }
+      .horizontal {
+        @apply(--layout-horizontal);
+      }
+      .game {
+        border: 1px solid black;
+        margin: 5px auto;
+        max-height: 30px;
+        text-align: center;
+        font-size: 12px;
+      }
+      .game .team {
+        width: 40%;
+        padding: 4px;
+        background: var(--paper-indigo-50);
+        color: #000;
+      }
+      .game .score {
+        width: 10%;
+        padding: 4px;
+        font-weight: bold;
+        background: var(--paper-indigo-800);
+        color: #FFF;
+      }
+    </style>
+
+    <iron-ajax
+      verbose
+      loading="{{loading}}"
+      url="db/liga_resultados_min.json"
+      params='{"LOCAL":"Real Madrid C.F."}'
+      handle-as="json"
+      on-response='_dataResponse'
+      debounce-duration="300"
+      id='ajax'>
+    </iron-ajax>
+  
+    <div class='summary'>
+      <paper-spinner alt="Loading..." active={{loading}}></paper-spinner>
+      <template is="dom-if" if="{{_showNoResults(loading, activeSearch, data.*)}}">
+        <h3>No results found for your search</h3>
+      </template>
+      <template is="dom-if" if="{{_showResults(loading, activeSearch, data.*)}}">
+        <h3>
+          <span class='highlited'>{{data.length}}</span> results have been found for your search:
+        </h3>
+      </template>
+    </div>
+    <div class='result'>
+      <template is="dom-repeat" items="{{data}}">
+        <div class="game horizontal">
+          <div class="team">{{item.LOCAL}}</div>
+          <div class="score">{{item.GOLL}}</div>
+          <div class="score">{{item.GOLV}}</div>
+          <div class="team">{{item.VISITANTE}}</div>
+        </div>
+      </template>
+    </div>
+
+  </template>
+
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'polyfot-result',
+
+      properties: {
+        data: {
+          type: Array,
+          value: () => {
+            return [];
+          }
+        },
+        /* Before first search it's false, from first search it's true */
+        activeSearch: {
+          type: Boolean,
+          value: false
+        }
+      },
+
+      _showResults(loading, activeSearch, dataInfo) {
+        if (!loading && activeSearch && dataInfo.value > 0) {
+          return true;
+        }
+        return false;
+      },
+
+      _showNoResults(loading, activeSearch, dataInfo) {
+        if (!loading && activeSearch && dataInfo.value == 0) {
+          return true;
+        }
+        return false;
+      },
+
+      _dataResponse(request) {
+        let response = request.detail.response;
+        response.forEach(game => {
+          this.unshift('data', game);
+        });
+      },
+
+      show(params) {
+        this.set('data', []);
+        this.$.ajax.set('params', params);
+        this.$.ajax.generateRequest();
+        this.activeSearch = true;
+      },
+
+      clear() {
+        this.set('data', []);
+        this.activeSearch = false;
+      }
+
+    });
+  }());
+  </script>
+</dom-module>
