@@ -1,6 +1,6 @@
-# \<polyfot-result\>
+# <polyfot-result\>
 
-
+Show search results by teams or players queries
 
 ## Install the Polymer-CLI
 
