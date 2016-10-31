@@ -1,4 +1,4 @@
-# <polyfot-result\>
+# Polyfot-Result
 
 Show search results by teams or players queries
 

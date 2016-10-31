@@ -14,17 +14,6 @@
     <style is="custom-style" include="demo-pages-shared-styles">
     </style>
 
-    <script type="text/javascript">
-      'use strict';
-      let _show = function() {
-        const polyfotResult = document.querySelector('polyfot-result');
-        polyfotResult.show({});
-      }
-      let _clear = function() {
-        const polyfotResult = document.querySelector('polyfot-result');
-        polyfotResult.clear();
-      }
-    </script>
   </head>
   <body>
 
@@ -32,8 +21,8 @@
       <h3>Basic polyfot-result Demo</h3>
       <demo-snippet>
         <template>
-          <button onclick='_show()'>Show Results</button>
-          <button onclick='_clear()'>Clear Results</button>
+          <button onclick='document.querySelector("polyfot-result").show({})'>Show Results</button>
+          <button onclick='document.querySelector("polyfot-result").clear()'>Clear Results</button>
           <polyfot-result></polyfot-result>
         </template>
       </demo-snippet>

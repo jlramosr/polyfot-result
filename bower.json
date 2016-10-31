@@ -1,6 +1,10 @@
 {
   "name": "polyfot-result",
+  "description": "Show search results by teams or players queries",
   "main": "polyfot-result.html",
+  "authors": [
+    "Jose Ramos <jlramosr@gmail.com>"
+  ],
   "dependencies": {
     "polymer": "Polymer/polymer#^1.4.0",
     "iron-ajax": "PolymerElements/iron-ajax#^1.4.3",
